@@ -138,14 +138,8 @@ function animConsoleResume(index, run_id, lines, error){
             lifeLike: true,
             startDelay: 100,
             afterComplete: function(){
-                /*
-                const nb = ANIM_NOTEBOOK["a" + index];
-                ANIM_CONSOLE["a" + index].destroy();
-                if (nb)
-                    nb.go();
-                else
-                    setActive("a" + index);
-                */
+                ANIM_CONSOLE["a" + index + "resume"].destroy();
+                ANIM_CODE["a" + index + "resume"].go();
             }
         })
         .type(" ")
@@ -176,17 +170,21 @@ function animConsoleResume(index, run_id, lines, error){
     return type;
 }
 
-function animCodeInit(index){
+function animCodeInit(index, end_here){
     var type = new TypeIt("#c" + index,
         {
             speed: 0.0,
             lifeLike: false,
             startDelay: 0,
             afterComplete: function(){
-                ANIM_CODE["a" + index].destroy();
-                let console = ANIM_CONSOLE["a" + index];
-                if (console)
-                    console.go();
+                try { ANIM_CODE["a" + index].destroy(); } catch {}
+                if (end_here){
+                    setActive("a" + index);
+                }else{
+                    let console = ANIM_CONSOLE["a" + index];
+                    if (console)
+                        console.go();
+                }
             }
         })
         .move('START')
@@ -228,7 +226,6 @@ function animNotebookInit(index, resumeType){
 
 function clickSection(index){
     hideAll();
-    console.log("index", index)
     const code = document.getElementById("c" + index);
     code.style.display = 'block';
     const sect = document.getElementById("a" + index);
@@ -374,8 +371,16 @@ window.onload = function(){
         .break()
         .type("<span class='hljs-meta'>@project(name=<span class='hljs-string'>'recs'</span>)</span>")
 
-    ANIM_CODE['a8'] = animCodeInit(8);
-    ANIM_CODE['a8resume'] = animCodeInit(8);
+    ANIM_CODE['a8'] = ANIM_CONSOLE['a8'];
+    ANIM_CODE['a8resume'] = animCodeInit(8, true)
+        .move(421, {instant: true})
+        .break()
+        .type("\t\t<span class='hljs-comment'># fixing the bug on the line below</span>")
+        .options({speed: 60})
+        .move(25)
+        .options({speed: 150})        
+        .delete(3)
+        .type("image <span class='hljs-comment'># FIXED!</span>")
 
     for (let i = 1; i < 8; i++)
         ANIM_NOTEBOOK['a' + i] = animNotebookInit(i);
