@@ -1,17 +1,16 @@
 <html>
 <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata" />
-    <link rel="stylesheet" type="text/css" href="mf_hero.css">
-    <link rel="stylesheet" type="text/css" href="simple-grid.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata" />
+	<link rel="stylesheet" type="text/css" href="mf_hero.css">
+	<link rel="stylesheet" type="text/css" href="simple-grid.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css">
 </head>
 <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-7">
-            <div class="editor">
-                <pre><code class="language-python" id="c0">
-from metaflow import FlowSpec
+	<div class="container">
+	  <div class="row">
+		<div class="col-7">
+			<div class="editor">
+				<pre><code class="language-python" id="c0">from metaflow import FlowSpec, step
 class MyFlow():
 
 	def start(self):
@@ -22,8 +21,7 @@ class MyFlow():
 
  if __name__ == '__main__':
 	 MyFlow()
-                    </code><code class="language-python" id="c1">
-from metaflow import FlowSpec
+					</code><code class="language-python" id="c1">from metaflow import FlowSpec, step
 class MyFlow(FlowSpec):
 
 	@step
@@ -37,151 +35,304 @@ class MyFlow(FlowSpec):
 
  if __name__ == '__main__':
 	 MyFlow()
-                    </code><code class="language-python" id="c2">
-from metaflow import FlowSpec
+					</code><code class="language-python" id="c2">from metaflow import FlowSpec, step, card
 class MyFlow(FlowSpec):
 
-    @step
-    def start(self):
-        self.fruits = ['apple', 'orange']
-        self.next(self.end)
+	@step
+	def start(self):
+		self.fruits = ['apple', 'orange']
+		self.next(self.end)
 
-    @step
-    def end(self):
-        self.fruits.append('kiwi')
-        print('fruits', self.fruits)
+	@step
+	def end(self):
+		self.fruits.append('kiwi')
+		print('fruits', self.fruits)
 
  if __name__ == '__main__':
-     MyFlow()
-                    </code>
-
-
-
-                    <code class="language-python" id="scale_out">from metaflow import FlowSpec
+	 MyFlow()
+					</code><code class="language-python" id="c3">from metaflow import FlowSpec, step, conda
 class MyFlow(FlowSpec):
-    @step
-    def start(self):
-        self.fruits = ['apple', 'orange']
-        self.next(self.train, foreach='fruits')
 
-    @conda(libraries={'pytorch': '9.0.0.0'})
-    @step
-    def train(self):
-        self.model = hal9000.fit(self.input)
-        self.next(self.join)
+	@step
+	def start(self):
+		self.fruits = ['apple', 'orange']
+		self.next(self.end)
 
-    @step
-    def join(self, inputs):
-        self.best = max(inputs, key=lambda x: x.score).model
-        self.next(self.end)
+	@step
+	def train(self):
 
-    @step
-    def end(self):
-        print('done!')
+	@step
+	def end(self):
+		print('model', self.model)
 
  if __name__ == '__main__':
-     MyFlow()</code></pre>
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="notebook">
-                <div class="nb-row" id="nb-row-in">
-                    <div class="nb-prompt">
-                        <span id="nb-prompt-in">In []:</span>
-                    </div>
-                    <div class="nb-cell nb-cell-in">
-                        <pre><code class="language-python" id="ni1">from metaflow import Run
+	 MyFlow()
+					</code><code class="language-python" id="c4">from metaflow import FlowSpec, step, conda, resources
+class MyFlow(FlowSpec):
+
+	@step
+	def start(self):
+		self.fruits = ['apple', 'orange']
+		self.next(self.train)
+
+	@step
+	def train(self):
+
+	@step
+	def end(self):
+		pass
+
+ if __name__ == '__main__':
+	 MyFlow()
+					</code><code class="language-python" id="c5">from metaflow import FlowSpec, step, conda, resources
+class MyFlow(FlowSpec):
+
+	@step
+	def start(self):
+		self.fruits = ['apple', 'orange']
+		self.next(self.train)
+
+	@conda(libraries={'stable-diffusion': '1.0.0'})
+	@resources(memory=64000, gpu=2)
+	@step
+	def train(self):
+		from stable_diffusion import from_prompt
+		self.image = from_prompt("Robot eating " + self.input)
+		self.next(self.end)
+
+	@step
+	def join(self, inputs):
+
+	@step
+	def end(self):
+		pass
+
+ if __name__ == '__main__':
+	 MyFlow()</code><code class="language-python" id="c6">from metaflow import FlowSpec, step, conda, resources, schedule
+class MyFlow(FlowSpec):
+
+	@step
+	def start(self):
+		self.fruits = ['apple'] * 4
+		self.next(self.train, foreach="fruits")
+
+	@conda(libraries={'stable-diffusion': '1.0.0'})
+	@resources(memory=64000, gpu=2)
+	@step
+	def train(self):
+		from stable_diffusion import from_prompt
+		self.image = from_prompt("Robot eating " + self.input)
+		self.next(self.join)
+
+	@step
+	def join(self, inputs):
+		self.next(self.end)
+
+	@step
+	def end(self):
+		pass
+
+ if __name__ == '__main__':
+	 MyFlow()</code><code class="language-python" id="c7">from metaflow import FlowSpec, step, conda, resources, project
+class MyFlow(FlowSpec):
+
+	@step
+	def start(self):
+		self.fruits = ['apple'] * 4
+		self.next(self.train, foreach="fruits")
+
+	@conda(libraries={'stable-diffusion': '1.0.0'})
+	@resources(memory=64000, gpu=2)
+	@step
+	def train(self):
+		from stable_diffusion import from_prompt
+		self.image = from_prompt("Robot eating " + self.input)
+		self.next(self.join)
+
+	@step
+	def join(self, inputs):
+		self.next(self.end)
+
+	@step
+	def end(self):
+		pass
+
+ if __name__ == '__main__':
+	 MyFlow()</code><code class="language-python" id="c8">from metaflow import FlowSpec, step, conda, resources
+class MyFlow(FlowSpec):
+
+	@step
+	def start(self):
+		self.fruits = ['apple', 'orange']
+		self.next(self.train)
+
+	@conda(libraries={'stable-diffusion': '1.0.0'})
+	@resources(memory=64000, gpu=2)
+	@step
+	def train(self):
+		from stable_diffusion import from_prompt
+		self.image = from_prompt("Robot eating " + self.fruits[0])
+		self.next(self.end)
+
+	@step
+	def end(self):
+		self.output = self.img
+
+ if __name__ == '__main__':
+	 MyFlow()</code>
+	</pre>
+			</div>
+		</div>
+		<div class="col-5">
+			<div class="notebook">
+				<div class="nb-row" id="nb-row-in">
+					<div class="nb-prompt">
+						<span id="nb-prompt-in">In []:</span>
+					</div>
+					<div class="nb-cell nb-cell-in">
+						<pre><code class="language-python" id="ni1">from metaflow import Run
 run = Run("MyFlow/2")
 run["end"].task.data.fruits</code></pre>
-                        <pre><code class="language-python" id="ni2">from metaflow.cards import get_cards
-get_cards("MyFlow/2/end/1")</code></pre>
-                    </div>
-                </div>
-                <div class="nb-row" id="nb-row-out">
-                    <div class="nb-prompt">
-                        <span id="nb-prompt-out">Out []:</span>
-                    </div>
-                    <div class="nb-cell nb-cell-out">
-                        <pre><code class="language-python nb-out" id="no1">["apple", "orange", "kiwi"]</code></pre>
-                        <div id="no2" class="nb-out">
-                            <div id="no2-box">
-                                <div id="cardtitle">
-                                    <h1>Metaflow Custom Card</h1>
-                                    Visualizing artifact: <span>fruits</span>
-                                </div>
-                            </div>
+						<pre><code class="language-python" id="ni2">from metaflow.cards import get_cards
+get_cards("MyFlow/3/end/1")</code></pre>
+						<pre><code class="language-python" id="ni3">from metaflow import Run
+run = Run("MyFlow/4")
+run["train"].task.data.model</code></pre>
+						<pre><code class="language-python" id="ni4">from metaflow import Run
+run = Run("MyFlow/5")
+run["train"].task.data.image</code></pre>
+						<pre><code class="language-python" id="ni5">from metaflow import Run
+run = Run("MyFlow/6")
+[t.data.image for t in run["train"]]</code></pre>
+						<pre><code class="language-python" id="ni6">from metaflow import Flow, namespace
+namespace(None)
+f = Flow("MyFlow")
+r = f.runs("runtime:argo-workflows")
+for run in r:
+	print(run.id, run.created_at)
+</code></pre>
+                        <pre><code class="language-python" id="ni7">from metaflow import Flow, namespace
+namespace(None)
+f = Flow("MyFlow")
+v1 = f.runs("project_branch:prod")
+v2 = f.runs("project_branch:cnn_v2")
+compare_performance(v1, v2)
+</code></pre>
+                        <pre><code class="language-python" id="ni8">from metaflow import Run, namespace
+namespace(None)
+Run("argo-44234")['end'].stderr
+</code></pre>
+					</div>
+				</div>
+				<div class="nb-row" id="nb-row-out">
+					<div class="nb-prompt">
+						<span id="nb-prompt-out">Out []:</span>
+					</div>
+					<div class="nb-cell nb-cell-out">
+						<pre><code class="language-python nb-out" id="no1">["apple", "orange", "kiwi"]</code></pre>
+						<div id="no2" class="nb-out">
+							<div id="no2-box">
+								<div id="cardtitle">
+									<h1>Metaflow Custom Card</h1>
+									Visualizing artifact: <span>fruits</span>
+								</div>
+							</div>
+						</div>
+						<div id="no3" class="nb-out">
+							<div id="no3-box"></div>
+						</div>
+						<div id="no4" class="nb-out">
+							<div id="no4-box"></div>
+						</div>
+						<div id="no5" class="nb-out">
+							<div id="no5-box"></div>
+						</div>
+						<pre><code class="language-python nb-out" id="no6">
+"argo-43567" "2022-09-14T00:00:00Z"
+"argo-43564" "2022-09-13T00:00:00Z"
+"argo-43561" "2022-09-12T00:00:00Z"
+						</code></pre>
+                        <div id="no7" class="nb-out">
+                            <div id="no7-box"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <pre><code class="language-bash nb-out" id="no8">
+Scheduled run argo-44234 FAILED
 
-            <div class="terminal">
-                <pre id="console">
-                </pre>
-            </div>
-        </div>
-      </div>
+Exception in MyFlow/end:
+AttributeError:
+Flow MyFlow has no attribute 'img'
+                        </code></pre>
+					</div>
+				</div>
+			</div>
 
-    <div class="row">
+			<div class="terminal">
+				<pre id="console">
+				</pre>
+			</div>
+		</div>
+	  </div>
 
-        <div class="col-4">
-            <div class="stage">
-                1. Develop
-                <div class="pillbox">
-                    <div class="section" id="a0">
-                        Create workflows
-                    </div>
-                    <div class="section" id="a1"> 
-                        Track executions
-                    </div>
-                    <div class="section" id="a2">
-                        Visualize results
-                    </div>
-                </div> 
-            </div>
-        </div>
+	<div class="row">
 
-        <div class="col-4">
-            <div class="stage">
-                2. Scale
-                <div class="pillbox">
-                    <div class="section" id="a3"> 
-                        Use any libraries
-                    </div>
-                    <div class="section" id="a4"> 
-                        Scale<br>up
-                    </div>
-                    <div class="section" id="a5"> 
-                        Scale<br>out
-                    </div>
-                </div> 
-            </div>
-        </div>
+		<div class="col-4">
+			<div class="stage">
+				1. Develop
+				<div class="pillbox">
+					<div class="section" id="a0">
+						Create workflows
+					</div>
+					<div class="section" id="a1"> 
+						Track executions
+					</div>
+					<div class="section" id="a2">
+						Visualize results
+					</div>
+				</div> 
+			</div>
+		</div>
 
-        <div class="col-4">
-            <div class="stage">
-                3. Deploy
-                <div class="pillbox">
-                    <div class="section" id="a6"> 
-                        Deploy to production
-                    </div>
-                    <div class="section" id="a7"> 
-                        Deploy an experiment
-                    </div>
-                    <div class="section" id="a8"> 
-                        Monitor production
-                    </div>
-                </div> 
-            </div>
-        </div>
+		<div class="col-4">
+			<div class="stage">
+				2. Scale
+				<div class="pillbox">
+					<div class="section" id="a3"> 
+						Manage libraries
+					</div>
+					<div class="section" id="a4"> 
+						Scale<br>up
+					</div>
+					<div class="section" id="a5"> 
+						Scale<br>out
+					</div>
+				</div> 
+			</div>
+		</div>
+
+		<div class="col-4">
+			<div class="stage">
+				3. Deploy
+				<div class="pillbox">
+					<div class="section" id="a6"> 
+						Deploy to production
+					</div>
+					<div class="section" id="a7"> 
+						Deploy an experiment
+					</div>
+					<div class="section" id="a8"> 
+						Debugging failures
+					</div>
+				</div> 
+			</div>
+		</div>
 
 
-      </div>
-    </div>
-    <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
-    <script charset="UTF-8" src="mf_hero.js"></script>
+	  </div>
+	</div>
+	<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+	<script charset="UTF-8" src="mf_hero.js"></script>
 
 </body>
 </html>

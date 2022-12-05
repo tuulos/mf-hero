@@ -18,7 +18,7 @@ pre{
     font-size: 90%;
     margin-top: 1em;
     background: #1a1e1c;
-    height: 10em;
+    height: 11em;
     color: #f2efe8;
 }
 .pillbox{
@@ -44,24 +44,56 @@ pre{
     font-family: 'Inconsolata', sans-serif;
 }
 
-#no2{
+.nb-out{
     display: none;
+    padding: 5px;
 }
 
 #no2-box{
     display: flex;
-    padding: 5px;
     background-image: url("fruits.png");
     background-size: 200px;
     background-repeat: no-repeat;
     background-position: 2em 5em;
     height: 250px;
     background-color: #faf8f4;
-    padding-left: 20px;
     border: 1px #ddd solid;
+    padding-left: 20px;
 }
 
-#no2-box h1{
+#no3-box{
+    display: flex;
+    background-image: url("model_card.png");
+    background-size: 95%;
+    background-repeat: no-repeat;
+    height: 200px;
+}
+
+#no4-box{
+    display: flex;
+    background-image: url("robot_apple.png");
+    background-size: 95%;
+    background-repeat: no-repeat;
+    height: 230px;
+}
+
+#no5-box{
+    display: flex;
+    background-image: url("robots.jpg");
+    background-size: 95%;
+    background-repeat: no-repeat;
+    height: 250px;
+}
+
+#no7-box{
+    display: flex;
+    background-image: url("hero_comp.png");
+    background-size: 95%;
+    background-repeat: no-repeat;
+    height: 250px;
+}
+
+#nb-row-out h1{
     color: #333;
     font-size: 1.2em;
 }
@@ -118,7 +150,7 @@ code{
 body{
     background-color: #faf8f4;
     font-family: Helvetica, sans-serif;
-    line-height: 1.5;
+    line-height: 1.2;
 }
 
 #console{
@@ -154,4 +186,8 @@ body{
 
 .mf_tstamp{
     color: #aaa;
+}
+
+.mf_failed{
+    color: #D84315;
 }
