@@ -1,18 +1,21 @@
+
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,300,300italic,400italic,700,700italic);
+
 .editor{
     min-height: 37em;
     background-color: #fafafa;
-    font-size: 80%;
+    font-size: 90%;
 }
 pre{
     margin: 0px;
 }
 .notebook{
-    background: #eee;
+    background: #fff;
     height: 20em;
 }
 .terminal{
     padding: 10px;
-    font-size: 80%;
+    font-size: 90%;
     margin-top: 1em;
     background: #1a1e1c;
     height: 10em;
@@ -21,8 +24,53 @@ pre{
 .pillbox{
     margin-top: 10px;
 }
+
+.notebook{
+    padding: 10px;
+}
+
+.nb-row{
+    padding: 2px;
+    display: flex;
+    font-size: 90%;
+}
+.nb-prompt{
+    padding-top: 5px;
+    width: 4em;
+    font-style: monospace;
+    float: left;
+    margin-right: 5px;
+    text-align: right;
+    font-family: 'Inconsolata', sans-serif;
+}
+
+#nb-prompt-in{
+    color: #303F9F;    
+}
+
+#nb-prompt-out{
+    color: #D84315;
+}
+.nb-cell{
+    flex-grow: 1;
+}
+
+.nb-cell-in{
+    background: #fefefe;
+    border: solid 1px #ccc;
+}
+
+.nb-cell-out code{
+    padding: 5px !important;
+    background: white;
+}
+
+.nb-cell code {
+    padding: 5px !important;
+}
+
 .section{
-    font-size: 70%;
+    font-size: 80%;
     width: 25%;
     background: #eee;
     float: left;
@@ -36,12 +84,19 @@ pre{
     text-align: center;
 }
 code{
-    background-color: #fafafa;
-    min-height: 20em;
+    font-family: 'Inconsolata', sans-serif;
+    tab-size: 2;
     display: none;
 }
 body{
     background-color: #faf8f4;
+    font-family: Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+#console{
+    font-size: 90%;
+    font-family: sans-serif;
 }
 
 .active {

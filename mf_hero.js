@@ -17,7 +17,12 @@ function hideAll(){
     for (const sect of sections)
         sect.classList.remove('active');
 
+    const nbrows = document.getElementsByClassName('nb-row');
+    for (const nbrow of nbrows)
+        nbrow.style.display = 'none';
+
     document.getElementById("console").innerHTML = "#";
+    document.getElementById("nb-prompt-in").innerHTML = "In []:";
 }
 
 function setActive(id){
@@ -33,11 +38,12 @@ function animConsole(index, lines){
             lifeLike: true,
             startDelay: 100,
             afterComplete: function(){
-                setActive("a" + index);
-                setTimeout(function(){
-                    //const el = document.getElementById("a" + (index + 1));
-                    //el.click();
-                }, 300);
+                const nb = ANIM_NOTEBOOK["a" + index];
+                ANIM_CONSOLE["a" + index].destroy();
+                if (nb)
+                    nb.go();
+                else
+                    setActive("a" + index);
             }
         })
         .type(" ")
@@ -69,13 +75,40 @@ function animCodeInit(index){
             startDelay: 0,
             afterComplete: function(){
                 ANIM_CODE["a" + index].destroy();
-                var console = ANIM_CONSOLE["a" + index];
+                let console = ANIM_CONSOLE["a" + index];
                 if (console)
                     console.go();
             }
         })
         .move('START')
         .options({speed: 30, lifeLike: true});
+    return type;
+}
+
+function animNotebookInit(index){
+    var type = new TypeIt("#ni" + index,
+        {
+            speed: 50,
+            lifeLike: true,
+            startDelay: 1000,
+            afterComplete: function(){
+                document.getElementById("nb-prompt-in").innerHTML = "In [1]:";
+                document.getElementById("nb-prompt-out").innerHTML = "Out [1]:";
+                document.getElementById("nb-row-out").style.display = 'block';
+                document.getElementById("no" + index).style.display = 'block';
+                setActive("a" + index);
+            },
+            beforeStep: function(){
+                document.getElementById("ni" + index).style.display = 'block';
+                document.getElementById("nb-row-in").style.display = 'block';
+            }
+        })
+        .pause(100)
+        .exec(function(){
+            ANIM_NOTEBOOK["a" + index].destroy();
+            document.getElementById("nb-prompt-in").innerHTML = "In [*]:";
+        })
+        .pause(1000);
     return type;
 }
 
@@ -128,6 +161,10 @@ window.onload = function(){
         .move(16)
         .delete(7)
         .type("<span class='hljs-string'>'fruits'</span>, self.fruits");
+
+
+
+    ANIM_NOTEBOOK['a1'] = animNotebookInit(1);
 
 
     const sections = document.getElementsByClassName('section');

@@ -65,8 +65,26 @@ class MyFlow(FlowSpec):
         </div>
         <div class="col-5">
             <div class="notebook">
-                Notebook
+                <div class="nb-row" id="nb-row-in">
+                    <div class="nb-prompt">
+                        <span id="nb-prompt-in">In []:</span>
+                    </div>
+                    <div class="nb-cell nb-cell-in">
+                        <pre><code class="language-python" id="ni1">from metaflow import Run
+run = Run("MyFlow/2")
+run["end"].task.data.fruits</code></pre>
+                    </div>
+                </div>
+                <div class="nb-row" id="nb-row-out">
+                    <div class="nb-prompt">
+                        <span id="nb-prompt-out">Out []:</span>
+                    </div>
+                    <div class="nb-cell nb-cell-out">
+                        <pre><code class="language-python" id="no1">["apple", "orange", "kiwi"]</code></pre>
+                    </div>
+                </div>
             </div>
+
             <div class="terminal">
                 <pre id="console">
                 </pre>
@@ -98,13 +116,13 @@ class MyFlow(FlowSpec):
                 2. Scale
                 <div class="pillbox">
                     <div class="section" id="a3"> 
-                        Scale<br>up
+                        Use any libraries
                     </div>
                     <div class="section" id="a4"> 
-                        Scale<br>out
+                        Scale<br>up
                     </div>
                     <div class="section" id="a5"> 
-                        Use any libraries
+                        Scale<br>out
                     </div>
                 </div> 
             </div>
