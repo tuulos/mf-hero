@@ -44,6 +44,33 @@ pre{
     font-family: 'Inconsolata', sans-serif;
 }
 
+#no2{
+    display: none;
+}
+
+#no2-box{
+    display: flex;
+    padding: 5px;
+    background-image: url("fruits.png");
+    background-size: 200px;
+    background-repeat: no-repeat;
+    background-position: 2em 5em;
+    height: 250px;
+    background-color: #faf8f4;
+    padding-left: 20px;
+    border: 1px #ddd solid;
+}
+
+#no2-box h1{
+    color: #333;
+    font-size: 1.2em;
+}
+
+#no2-box span{
+    font-family: 'Inconsolata', monospace;
+    background-color: #eee;
+}
+
 #nb-prompt-in{
     color: #303F9F;    
 }

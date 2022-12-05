@@ -37,7 +37,27 @@ class MyFlow(FlowSpec):
 
  if __name__ == '__main__':
 	 MyFlow()
-                    </code><code class="language-python" id="scale_out">from metaflow import FlowSpec
+                    </code><code class="language-python" id="c2">
+from metaflow import FlowSpec
+class MyFlow(FlowSpec):
+
+    @step
+    def start(self):
+        self.fruits = ['apple', 'orange']
+        self.next(self.end)
+
+    @step
+    def end(self):
+        self.fruits.append('kiwi')
+        print('fruits', self.fruits)
+
+ if __name__ == '__main__':
+     MyFlow()
+                    </code>
+
+
+
+                    <code class="language-python" id="scale_out">from metaflow import FlowSpec
 class MyFlow(FlowSpec):
     @step
     def start(self):
@@ -73,6 +93,8 @@ class MyFlow(FlowSpec):
                         <pre><code class="language-python" id="ni1">from metaflow import Run
 run = Run("MyFlow/2")
 run["end"].task.data.fruits</code></pre>
+                        <pre><code class="language-python" id="ni2">from metaflow.cards import get_cards
+get_cards("MyFlow/2/end/1")</code></pre>
                     </div>
                 </div>
                 <div class="nb-row" id="nb-row-out">
@@ -80,7 +102,15 @@ run["end"].task.data.fruits</code></pre>
                         <span id="nb-prompt-out">Out []:</span>
                     </div>
                     <div class="nb-cell nb-cell-out">
-                        <pre><code class="language-python" id="no1">["apple", "orange", "kiwi"]</code></pre>
+                        <pre><code class="language-python nb-out" id="no1">["apple", "orange", "kiwi"]</code></pre>
+                        <div id="no2" class="nb-out">
+                            <div id="no2-box">
+                                <div id="cardtitle">
+                                    <h1>Metaflow Custom Card</h1>
+                                    Visualizing artifact: <span>fruits</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

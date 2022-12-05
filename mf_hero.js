@@ -13,6 +13,10 @@ function hideAll(){
     for (const code of codes)
         code.style.display = 'none';
 
+    const nb_outs = document.getElementsByClassName('nb-out');
+    for (const nb_out of nb_outs)
+        nb_out.style.display = 'none';
+
     const sections = document.getElementsByClassName('section');
     for (const sect of sections)
         sect.classList.remove('active');
@@ -95,6 +99,7 @@ function animNotebookInit(index){
                 document.getElementById("nb-prompt-in").innerHTML = "In [1]:";
                 document.getElementById("nb-prompt-out").innerHTML = "Out [1]:";
                 document.getElementById("nb-row-out").style.display = 'block';
+
                 document.getElementById("no" + index).style.display = 'block';
                 setActive("a" + index);
             },
@@ -134,6 +139,10 @@ window.onload = function(){
         a1: animConsole(1, [
                 {step: 'start', msg: ""},
                 {step: 'end', msg: "fruits ['apple', 'orange', 'kiwi']"}
+            ]),
+        a2: animConsole(2, [
+                {step: 'start', msg: ""},
+                {step: 'end', msg: "fruits ['apple', 'orange', 'kiwi']"}
             ])
     }
 
@@ -162,10 +171,13 @@ window.onload = function(){
         .delete(7)
         .type("<span class='hljs-string'>'fruits'</span>, self.fruits");
 
-
+    ANIM_CODE['a2'] = animCodeInit(2)
+        .move(156, {instant: true})
+        .break()
+        .type('\t\t<span class="hljs-meta">@card(type=<span class="hljs-string">"sketch"</span>)</span>')
 
     ANIM_NOTEBOOK['a1'] = animNotebookInit(1);
-
+    ANIM_NOTEBOOK['a2'] = animNotebookInit(2);
 
     const sections = document.getElementsByClassName('section');
     for (let i = 0; i < sections.length; i++)
