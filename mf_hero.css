@@ -1,0 +1,75 @@
+.editor{
+    min-height: 37em;
+    background-color: #fafafa;
+    font-size: 80%;
+}
+pre{
+    margin: 0px;
+}
+.notebook{
+    background: #eee;
+    height: 20em;
+}
+.terminal{
+    padding: 10px;
+    font-size: 80%;
+    margin-top: 1em;
+    background: #1a1e1c;
+    height: 10em;
+    color: #f2efe8;
+}
+.pillbox{
+    margin-top: 10px;
+}
+.section{
+    font-size: 70%;
+    width: 25%;
+    background: #eee;
+    float: left;
+    text-align: center;
+    padding: 6px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.stage{
+    text-align: center;
+}
+code{
+    background-color: #fafafa;
+    min-height: 20em;
+    display: none;
+}
+body{
+    background-color: #faf8f4;
+}
+
+.active {
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #eee
+  }
+  50% {
+    background-color: #81bd9d;        
+  }
+  100% {
+    background-color: #eee;
+  }
+}
+
+.done {
+    background-color: #81bd9d;
+}
+
+.mf_title{
+    color: #d78bd6;
+}
+
+.mf_tstamp{
+    color: #aaa;
+}

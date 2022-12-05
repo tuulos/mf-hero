@@ -1,93 +1,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata" />
-    <style type="text/css">
-        .editor{
-            min-height: 30em;
-            background-color: #fafafa;
-        }
-        pre{
-            margin: 0px;
-        }
-        .notebook{
-            background: #eee;
-            height: 20em;
-        }
-        .terminal{
-            padding: 10px;
-            font-size: 80%;
-            margin-top: 1em;
-            background: #1a1e1c;
-            height: 9em;
-            color: #f2efe8;
-        }
-        .pillbox{
-            margin-top: 10px;
-        }
-        .pill{
-            font-size: 70%;
-            width: 25%;
-            background: #eee;
-            float: left;
-            text-align: center;
-            padding: 6px;
-            border-radius: 5px;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-        .stage{
-            text-align: center;
-        }
-        code{
-            background-color: #fafafa;
-            min-height: 20em;
-            display: none;
-        }
-        body{
-            background-color: #faf8f4;
-        }
-
-        .active {
-          animation-name: pulse;
-          animation-duration: 1s;
-          animation-iteration-count: infinite;
-        }
-
-        @keyframes pulse {
-          0% {
-            background-color: #eee
-          }
-          50% {
-            background-color: #81bd9d;        
-          }
-          100% {
-            background-color: #eee;
-          }
-        }
-
-        .done {
-            background-color: #81bd9d;
-        }
-
-        .mf_title{
-            color: #d78bd6;
-        }
-
-        .mf_tstamp{
-            color: #aaa;
-        }
-
-    </style>
-        <link rel="stylesheet" type="text/css" href="simple-grid.css">
-
+    <link rel="stylesheet" type="text/css" href="mf_hero.css">
+    <link rel="stylesheet" type="text/css" href="simple-grid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css">
 </head>
 <body>
     <div class="container">
       <div class="row">
         <div class="col-7">
             <div class="editor">
-                <pre>
-                    <code class="language-python" id="create_workflows">
+                <pre><code class="language-python" id="c0">
 from metaflow import FlowSpec
 class MyFlow():
 
@@ -99,7 +22,7 @@ class MyFlow():
 
  if __name__ == '__main__':
 	 MyFlow()
-                    </code><code class="language-python" id="track_executions">
+                    </code><code class="language-python" id="c1">
 from metaflow import FlowSpec
 class MyFlow(FlowSpec):
 
@@ -114,8 +37,30 @@ class MyFlow(FlowSpec):
 
  if __name__ == '__main__':
 	 MyFlow()
-                    </code>
-                </pre>
+                    </code><code class="language-python" id="scale_out">from metaflow import FlowSpec
+class MyFlow(FlowSpec):
+    @step
+    def start(self):
+        self.fruits = ['apple', 'orange']
+        self.next(self.train, foreach='fruits')
+
+    @conda(libraries={'pytorch': '9.0.0.0'})
+    @step
+    def train(self):
+        self.model = hal9000.fit(self.input)
+        self.next(self.join)
+
+    @step
+    def join(self, inputs):
+        self.best = max(inputs, key=lambda x: x.score).model
+        self.next(self.end)
+
+    @step
+    def end(self):
+        print('done!')
+
+ if __name__ == '__main__':
+     MyFlow()</code></pre>
             </div>
         </div>
         <div class="col-5">
@@ -135,13 +80,13 @@ class MyFlow(FlowSpec):
             <div class="stage">
                 1. Develop
                 <div class="pillbox">
-                    <div onclick="click_create_workflows(this)" class="pill" id="pill_create_workflows">
+                    <div class="section" id="a0">
                         Create workflows
                     </div>
-                    <div onclick="click_track_executions(this)" class="pill" id="pill_track_executions"> 
+                    <div class="section" id="a1"> 
                         Track executions
                     </div>
-                    <div id="viz_results" class="pill">
+                    <div class="section" id="a2">
                         Visualize results
                     </div>
                 </div> 
@@ -152,13 +97,13 @@ class MyFlow(FlowSpec):
             <div class="stage">
                 2. Scale
                 <div class="pillbox">
-                    <div id="scale_up" class="pill">
+                    <div class="section" id="a3"> 
                         Scale<br>up
                     </div>
-                    <div id="scale_out" class="pill">
+                    <div class="section" id="a4"> 
                         Scale<br>out
                     </div>
-                    <div id="use_libs" class="pill">
+                    <div class="section" id="a5"> 
                         Use any libraries
                     </div>
                 </div> 
@@ -169,13 +114,13 @@ class MyFlow(FlowSpec):
             <div class="stage">
                 3. Deploy
                 <div class="pillbox">
-                    <div id="deploy_prod" class="pill">
+                    <div class="section" id="a6"> 
                         Deploy to production
                     </div>
-                    <div id="deploy_exp" class="pill">
+                    <div class="section" id="a7"> 
                         Deploy an experiment
                     </div>
-                    <div onclick="monitor_prod" class="pill">
+                    <div class="section" id="a8"> 
                         Monitor production
                     </div>
                 </div> 
@@ -185,197 +130,10 @@ class MyFlow(FlowSpec):
 
       </div>
     </div>
-<script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-<!-- and it's easy to individually load additional languages -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
-<script>
+    <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+    <script charset="UTF-8" src="mf_hero.js"></script>
 
-    var active_typeit;
-
-    function hideAll(){
-        if (active_typeit){
-            try{
-                active_typeit.reset();
-            }catch{}
-        }
-        const codes = document.getElementsByTagName('code');
-        for (const code of codes)
-            code.style.display = 'none';
-
-        const pills = document.getElementsByClassName('pill');
-        for (const pill of pills)
-            pill.classList.remove('active');
-
-        document.getElementById("console").innerHTML = "#";
-    }
-
-    function setActive(id){
-        active_typeit.destroy();
-        const el = document.getElementById(id);
-        el.classList.remove('active');
-        el.classList.add('done');
-    }
-
-    hljs.highlightAll();
-
-
-    window.onload = function(){
-        createWorkflows_console = new TypeIt("#console",
-            {
-                speed: 200,
-                lifeLike: true,
-                startDelay: 100,
-                afterComplete: function(){
-                    setActive("pill_create_workflows") 
-                    setTimeout(function(){
-                        const el = document.getElementById("pill_track_executions");
-                        click_track_executions(el);
-                    }, 300);
-                }
-            })
-            .type(" ")
-            .pause(500)
-            .type("python ")
-            .options({speed: 30})
-            .type([
-                "myflow.py run"
-            ])
-            .break()
-            .options({speed: 0, lifeLike: false})
-            .pause(200)
-            .type("<span class='mf_title'><b>Metaflow 2.1.0</b> executing MyFlow</span>")
-            .break()
-            .pause(600)
-            .type("<span class='mf_tstamp'>[2/start/1]</span> hello")
-            .break()
-            .pause(600)
-            .type("<span class='mf_tstamp'>[2/end/1]</span> world")
-            .break()
-            .pause(200)
-            .type("<span class='mf_done'>Flow successful ✨</span")
-
-        createWorkflows = new TypeIt("#create_workflows",
-            {
-                speed: 0.0,
-                lifeLike: false,
-                startDelay: 0,
-                afterComplete: function(){
-                    active_typeit.destroy();
-                    active_typeit = createWorkflows_console;
-                    active_typeit.go();
-                }
-            })
-            .move('START')
-            .options({speed: 30, lifeLike: true})
-            .move(43, {instant: true})
-            .type('<span class="hljs-title class_ inherited__">FlowSpec</span>')
-            .move(3)
-            .break()
-            .type('\t<span class="hljs-meta">@step</span>')
-            .options({speed: 5, lifeLike: false})
-            .move(36)
-            .options({speed: 30, lifeLike: true})
-            .type('\t\tself.next(self.end)')
-            .break()
-            .break()
-            .type('\t<span class="hljs-meta">@step</span>');
-
-        trackExecutions_console = new TypeIt("#console",
-            {
-                speed: 200,
-                lifeLike: true,
-                startDelay: 100,
-                afterComplete: function(){
-                    setActive("pill_track_executions");
-                }
-            })
-            .type(" ")
-            .pause(500)
-            .type("python ")
-            .options({speed: 30})
-            .type([
-                "myflow.py run"
-            ])
-            .break()
-            .options({speed: 0, lifeLike: false})
-            .pause(200)
-            .type("<span class='mf_title'><b>Metaflow 2.1.0</b> executing MyFlow</span>")
-            .break()
-            .pause(600)
-            .type("<span class='mf_tstamp'>[3/start/1]</span>")
-            .break()
-            .pause(600)
-            .type("<span class='mf_tstamp'>[3/end/1]</span> fruits ['apple', 'orange', 'kiwi']")
-            .break()
-            .pause(200)
-            .type("<span class='mf_done'>Flow successful ✨</span")
-
-        trackExecutions = new TypeIt("#track_executions",
-            {
-                speed: 0.0,
-                lifeLike: false,
-                startDelay: 0,
-                afterComplete: function(){
-                    active_typeit.destroy();
-                    active_typeit = trackExecutions_console;
-                    active_typeit.go();
-                }
-            })
-            .move('START')
-            .options({speed: 30, lifeLike: true})
-            .move(96, {instant: true})   
-            .delete(14)
-            .type("self.fruits = [<span class='hljs-string'>'apple'</span>, <span class='hljs-string'>'orange'</span>]")
-            .move(46)
-            .break()
-            .type("\t\tself.fruits.append(<span class='hljs-string'>'kiwi'</span>)")
-            .move(16)
-            .delete(7)
-            .type("<span class='hljs-string'>'fruits'</span>, self.fruits")
-
-        hideAll();
-
-        setTimeout(function(){
-            const el = document.getElementById("pill_create_workflows");
-            click_create_workflows(el);
-        }, 100);
-
-    }
-</script>
 </body>
-
-
-<script>
-
-
-    function click_create_workflows(pill){
-        hideAll();
-        const el = document.getElementById("create_workflows");
-        el.style.display = 'block';
-        pill.classList.add('active');
-        try{
-            createWorkflows.reset();
-            createWorkflows_console.reset();
-        }catch {}
-        active_typeit = createWorkflows;
-        active_typeit.go();
-    }
-
-    function click_track_executions(pill){
-        hideAll();
-        const el = document.getElementById("track_executions");
-        el.style.display = 'block';
-        pill.classList.add('active');
-        try{
-            trackExecutions.reset();
-            trackExecutions_console.reset();
-        }catch {}
-        active_typeit = trackExecutions;
-        active_typeit.go();
-    }
-
-</script>
-
 </html>
